@@ -11,25 +11,26 @@
             --transition-timing-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* Subtle overshoot/spring for bounces */
             --transition-fast: 0.15s;
 
-            /* Radii */
-            --border-radius-sm: 4px;
-            --border-radius-md: 6px;
-            /* Slightly smaller */
-            --border-radius-lg: 10px;
-            /* Slightly smaller */
+            /* Radii (Material Design 3 Sizes) */
+            --border-radius-xs: 4px;
+            --border-radius-sm: 10px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 20px;
+            --border-radius-xl: 28px;
+            --border-radius-full: 9999px;
 
             /* Sidebar */
-            --sidebar-min-width: 255px;
+            --sidebar-min-width: 120px;
             --sidebar-max-width: 500px;
             --sidebar-default-width: 255px;
             --sidebar-resize-handle-width: 5px;
 
-            /* Shadows (More Pronounced for Depth) */
-            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 1px rgba(0, 0, 0, 0.05);
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08);
-            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.15);
+            /* Shadows (Material Design 3 Elevation) */
+            --shadow-xs: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+            --shadow-md: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 12px 16px 4px rgba(0, 0, 0, 0.15), 0 4px 8px 3px rgba(0, 0, 0, 0.3);
+            --shadow-xl: 0 24px 32px 8px rgba(0, 0, 0, 0.15), 0 8px 16px 6px rgba(0, 0, 0, 0.3);
 
             /* Z-Indexes */
             --z-sticky: 10;
@@ -40,82 +41,55 @@
             /* For notifications */
 
 
-            /* --- Light Theme --- */
-            --primary-color: #D32F2F;
-            --primary-color-dark: #B71C1C;
-            --primary-color-light: #FFEBEE;
-            /* Keep this light for contrast */
-            --background-color: #ffffff;
-            /* Pure white */
-            --surface-color: #fdfdfd;
-            /* Slightly off-white */
-            --surface-color-alt: #f5f5f5;
-            /* Lighter grey */
-            --text-color: #1a1a1a;
-            /* Darker text */
-            --text-color-muted: #555555;
-            /* Adjusted grey */
-            --text-color-subtle: #888888;
-            /* Lighter subtle grey */
-            --border-color: #e0e0e0;
-            --border-color-second: #e0e0e0;
-            /* Lighter border */
-            --border-color-light: #ebebeb;
-            --hover-bg-color: #f0f0f0;
-            /* Subtle hover */
-            --focus-ring-color: rgba(211, 47, 47, 0.2);
-            /* Slightly softer focus */
-            --icon-color: #444444;
-            --icon-color-hover: var(--text-color);
-            --toast-bg: #333333;
-            --toast-text: #f8f9fa;
-            --resizer-color: var(--border-color);
+            /* --- Light Theme (Material 3) --- */
+            --primary-color: #ba1a1a;
+            --primary-color-dark: #93000a;
+            --primary-color-light: #ffdad6;
+            --background-color: #fef7ff;
+            --surface-color: #fef7ff;
+            --surface-color-alt: #f3edf7;
+            --text-color: #1d1b20;
+            --text-color-muted: #49454f;
+            --text-color-subtle: #79747e;
+            --border-color: #79747e;
+            --border-color-second: #79747e;
+            --border-color-light: #c9c5d0;
+            --hover-bg-color: #e8def8;
+            --focus-ring-color: rgba(186, 26, 26, 0.2);
+            --icon-color: #49454f;
+            --icon-color-hover: #1d1b20;
+            --toast-bg: #313033;
+            --toast-text: #f4eff4;
+            --resizer-color: var(--border-color-light);
             --resizer-hover-color: var(--primary-color);
-            /* Add Primary RGB for potential use */
-            --primary-color-rgb: 211, 47, 47;
+            --primary-color-rgb: 186, 26, 26;
         }
 
         html[data-theme="dark"] {
-            --primary-color: #E57373;
-            /* Keep red vibrant */
-            --primary-color-dark: #bb6262;
-            /* Lighter red for hover/active */
-            --primary-color-light: rgba(229, 115, 115, 0.1);
-            /* Subtle highlight */
-            --background-color: #131316;
-            /* Much darker background */
-            --surface-color: #131316;
-            /* Darker surface */
-            --surface-color-alt: #2a2a2a;
-            /* Slightly lighter dark */
-            --text-color: #e1e1e1;
-            /* Slightly less bright white */
-            --text-color-muted: #a0a0a0;
-            /* Lighter muted */
-            --text-color-subtle: #707070;
-            /* Darker subtle */
-            --border-color: transparent;
-            /* Changed to transparent */
-            --border-color-light: #282828;
-            /* Second Color */
-            --border-color-second: #333333;
-            /* Button Color */
-            --button-color: #18181b;
-            /* Subtle inner border */
-            --hover-bg-color: #2c2c2c;
-            /* Darker hover */
-            --focus-ring-color: rgba(229, 115, 115, 0.3);
-            /* Keep focus visible */
-            --icon-color: #a0a0a0;
-            --icon-color-hover: var(--text-color);
-            --toast-bg: #e1e1e1;
-            /* Light toast on dark bg */
-            --toast-text: #1a1a1a;
-            --resizer-color: var(--border-color);
+            /* --- Dark Theme (Material 3 - Deep Dark) --- */
+            --primary-color: #ffb4ab;
+            --primary-color-dark: #ffdad6;
+            --primary-color-light: rgba(255, 180, 171, 0.1);
+            --background-color: #0d0d0f; /* Even darker black */
+            --surface-color: #141218;
+            --surface-color-alt: #1d1b20;
+            --text-color: #e6e1e5;
+            --text-color-muted: #cac4d0;
+            --text-color-subtle: #938f99;
+            --border-color: #938f99;
+            --border-color-light: #49454f;
+            --border-color-second: #353438;
+            --button-color: #1d1b20;
+            --hover-bg-color: #2b2930;
+            --focus-ring-color: rgba(255, 180, 171, 0.3);
+            --icon-color: #cac4d0;
+            --icon-color-hover: #e6e1e5;
+            --toast-bg: #e6e1e5;
+            --toast-text: #313033;
+            --resizer-color: var(--border-color-light);
             --resizer-hover-color: var(--primary-color);
-            /* Add Primary RGB for potential use */
-            --primary-color-rgb: 229, 115, 115;
-            --video-card-background: #18181b;
+            --primary-color-rgb: 255, 180, 171;
+            --video-card-background: #141218;
         }
 
 
@@ -196,82 +170,93 @@
             display: flex;
             height: 100%;
             overflow: hidden;
+            background-color: var(--background-color);
         }
 
-        /* --- Sidebar --- */
         .sidebar {
             width: var(--sidebar-default-width);
             min-width: var(--sidebar-min-width);
             max-width: var(--sidebar-max-width);
-            border-right: 1px solid var(--border-color-light);
             display: flex;
             flex-direction: column;
             flex-shrink: 0;
-            transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing);
             position: relative;
-            will-change: background-color, border-color;
+            background-color: var(--background-color);
         }
 
-        /* Sidebar Resizer */
+        /* Sidebar Resizer Handle (Material 3 Style) */
+        .sidebar-content {
+            padding: 15px;
+            overflow-y: auto;
+            flex-grow: 1;
+            border-radius: var(--border-radius-lg);
+            margin: 10px 10px 5px 10px;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color-light);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .sidebar-footer {
+            padding: 15px;
+            flex-shrink: 0;
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius-lg);
+            margin: 5px 10px 10px 10px;
+            border: 1px solid var(--border-color-light);
+            box-shadow: var(--shadow-xs);
+        }
+
+        /* Sidebar Resizer Handle (Material 3 Style) */
         .sidebar-resizer {
             position: absolute;
             top: 0;
-            right: -3px;
-            width: var(--sidebar-resize-handle-width);
+            right: -10px; /* Perfectly centered in the 20px gap */
+            width: 20px;
             height: 100%;
-            background-color: transparent;
             cursor: col-resize;
             z-index: var(--z-dropdown);
-        }
-
-        .sidebar-resizer:hover::after,
-        .sidebar-resizer.resizing::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0px; /* Adjust to expand from center */
-            width: 5px; /* Make it wider on hover/active */
-            height: 100%;
-            background-color: var(--resizer-hover-color);
-            opacity: 1; /* Make it fully opaque */
-            transition: background-color var(--transition-speed) var(--transition-timing), width var(--transition-speed) var(--transition-timing), opacity var(--transition-speed) var(--transition-timing), left var(--transition-speed) var(--transition-timing);
-            border-radius: 2px; /* Slight roundness */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity var(--transition-speed) var(--transition-timing);
         }
 
         .sidebar-resizer::after {
             content: "";
-            position: absolute;
-            top: 0;
-            left: 1px;
-            width: 3px;
-            height: 100%;
-            background-color: var(--resizer-color);
+            width: 4px;
+            height: 48px;
+            background-color: var(--border-color-light);
+            border-radius: var(--border-radius-full);
+            transition: all var(--transition-speed) var(--transition-timing);
             opacity: 0.3;
-            transition: background-color var(--transition-speed) var(--transition-timing), width var(--transition-speed) var(--transition-timing), opacity var(--transition-speed) var(--transition-timing), left var(--transition-speed) var(--transition-timing);
-            border-radius: 2px;
         }
 
-        .sidebar-content {
-            /* Scrollable area */
-            padding: 15px; /* Adjusted padding */
-            overflow-y: auto;
-            flex-grow: 1;
-            border: 1px solid var(--border-color-light); /* Added border */
-            border-radius: var(--border-radius-lg); /* Added border-radius */
-            margin: 10px 10px 5px 10px; /* Added margin (Top, Sides, Bottom) */
-            background-color: var(--surface-color); /* Ensure background color */
-            transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing), padding var(--transition-speed) var(--transition-timing), margin var(--transition-speed) var(--transition-timing); /* Added transition */
+        .sidebar-resizer:hover::after,
+        .sidebar-resizer.resizing::after {
+            width: 6px;
+            height: 80px;
+            background-color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+            opacity: 1;
         }
 
-        .sidebar-footer {
-            padding: 15px; /* Adjusted padding */
-            /* border-top: 1px solid var(--border-color-light); */ /* Removed original border-top */
-            flex-shrink: 0;
-            background-color: var(--background-color);
-            transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing), padding var(--transition-speed) var(--transition-timing), margin var(--transition-speed) var(--transition-timing); /* Added transition */
-            border: 1px solid var(--border-color-light); /* Added border */
-            border-radius: var(--border-radius-lg); /* Added border-radius */
-            margin: 5px 10px 10px 10px; /* Added margin (Top, Sides, Bottom) */
+        /* Add a vertical line to show the "edge" of the resizer area on hover */
+        .sidebar-resizer::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: var(--border-color-light);
+            opacity: 0;
+            transition: opacity var(--transition-speed) var(--transition-timing);
+            pointer-events: none;
+        }
+
+        .sidebar-resizer:hover::before,
+        .sidebar-resizer.resizing::before {
+            opacity: 0.1;
         }
 
         .sidebar-header {
@@ -297,6 +282,101 @@
             color: var(--primary-color);
         }
 
+        /* Playlist Form (Unified Material Design) */
+        .playlist-form-unified {
+            background-color: var(--surface-color-alt);
+            padding: 4px 4px 4px 16px;
+            border-radius: var(--border-radius-full);
+            border: 1px solid var(--border-color-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-xs);
+            transition: all var(--transition-speed) var(--transition-timing);
+        }
+
+        .playlist-form-unified:focus-within {
+            border-color: var(--primary-color);
+            background-color: var(--surface-color);
+            box-shadow: 0 0 0 2px var(--focus-ring-color);
+        }
+
+        .playlist-form-unified input[type="text"] {
+            flex-grow: 1;
+            background: transparent !important;
+            border: none !important;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            outline: none;
+            box-shadow: none !important;
+        }
+
+        .playlist-form-unified button {
+            flex-shrink: 0;
+            padding: 0;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .playlist-form-unified button .btn-text {
+            display: none;
+        }
+
+        .playlist-form-unified button svg {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Playlist Filter (Unified Material Design) */
+        .playlist-filter-unified {
+            background-color: var(--surface-color-alt);
+            padding: 4px 4px 4px 16px; /* Increased left padding for OCD-friendly breathing room */
+            border-radius: var(--border-radius-full);
+            border: 1px solid var(--border-color-light);
+            display: flex;
+            align-items: center;
+            gap: 12px; /* Increased gap between icon and text */
+            box-shadow: var(--shadow-xs);
+            transition: all var(--transition-speed) var(--transition-timing);
+        }
+
+        .playlist-filter-unified:focus-within {
+            border-color: var(--primary-color);
+            background-color: var(--surface-color);
+            box-shadow: 0 0 0 2px var(--focus-ring-color);
+        }
+
+        .playlist-filter-unified svg {
+            width: 16px;
+            height: 16px;
+            color: var(--text-color-subtle);
+            flex-shrink: 0;
+        }
+
+        .playlist-filter-unified input[type="search"] {
+            flex-grow: 1;
+            background: transparent !important;
+            border: none !important;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            outline: none;
+            box-shadow: none !important;
+            /* Remove default search icon as we use SVG */
+            -webkit-appearance: none;
+        }
+
+        .playlist-filter-unified input[type="search"]::-webkit-search-cancel-button {
+            /* Optional: Style the clear button if needed, but standard is often fine */
+            cursor: pointer;
+        }
+
         /* Form Styles */
         .form-section {
             margin-bottom: 20px;
@@ -314,13 +394,13 @@
         input[type="url"],
         input[type="search"] {
             width: 100%;
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius-md);
-            font-size: 0.9rem;
-            background-color: var(--button-color);
+            padding: 12px 16px;
+            border: 1px solid var(--border-color-light);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.95rem;
+            background-color: var(--surface-color-alt);
             color: var(--text-color);
-            transition: border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing);
+            transition: all var(--transition-speed) var(--transition-timing);
         }
 
         input[type="text"]:focus,
@@ -328,136 +408,88 @@
         input[type="search"]:focus {
             border-color: var(--primary-color);
             background-color: var(--surface-color);
-            box-shadow: 0 0 0 3px var(--focus-ring-color);
-            /* Keep focus ring */
+            box-shadow: 0 0 0 2px var(--focus-ring-color);
+            outline: none;
         }
 
         input::placeholder {
             color: var(--text-color-subtle);
         }
 
-        input[type="search"] {
-            padding-left: 30px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: 10px center;
-            background-size: 14px 14px;
+        .btn-text {
+            display: inline;
         }
 
-        html[data-theme="dark"] input[type="search"] {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23b0b3b8' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
-        }
-
-        /* Button Styles */
+        /* Button Styles (Material 3) */
         button {
-            background-color: #d75f5f;
-            color: white;
+            background-color: var(--primary-color);
+            color: var(--background-color);
             border: none;
-            padding: 8px 16px;
-            border-radius: var(--border-radius-md);
+            padding: 10px 24px;
+            border-radius: var(--border-radius-full);
             cursor: pointer;
             font-size: 0.9rem;
-            font-weight: 600;
-            transition: background-color var(--transition-speed) var(--transition-timing),
-                        transform var(--transition-speed) var(--transition-timing-spring), /* Use spring for transform */
-                        box-shadow var(--transition-speed) var(--transition-timing-spring), /* Use spring for shadow */
-                        opacity var(--transition-speed) var(--transition-timing);
+            font-weight: 500;
+            letter-spacing: 0.1px;
+            transition: all var(--transition-speed) var(--transition-timing);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
             box-shadow: var(--shadow-xs);
-            line-height: 1.4;
-            /* Prevent text jump on loading */
-            will-change: transform, background-color, box-shadow; /* Hint to the browser for better performance */
+            line-height: 1.5;
+            will-change: transform, background-color, box-shadow;
         }
 
         button:not(:disabled):hover {
-            transform: translateY(-2px) scale(1.02) translateZ(0); /* Add translateZ(0) for GPU acceleration */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #bb6262;
+            background-color: var(--primary-color-dark);
+            box-shadow: var(--shadow-sm);
         }
 
         button:not(:disabled):active {
-            transform: translateY(0px) translateZ(0); /* Ensure consistency and make it "press" in */
-            box-shadow: var(--shadow-xs);
+            box-shadow: none;
+            transform: scale(0.98);
         }
 
         button:disabled {
             background-color: var(--surface-color-alt);
             color: var(--text-color-subtle);
             cursor: not-allowed;
-            transform: none;
             box-shadow: none;
-            opacity: 0.7;
-        }
-
-        button.is-loading {
-            pointer-events: none;
-        }
-
-        /* Loading spinner inside button */
-        .spinner {
-            width: 1em;
-            height: 1em;
-            border: 2px solid currentColor;
-            border-right-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            margin-left: -2px;
-            /* Adjust alignment */
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            opacity: 0.38;
         }
 
         button.secondary {
-            font-size: 0.8rem;
-            background-color: var(--surface-color);
-            color: var(--text-color-muted);
-            border: 1px solid var(--border-color-second);
-            padding: 6px 10px;
-            font-weight: 500;
+            background-color: var(--surface-color-alt);
+            color: var(--primary-color);
+            border: 1px solid var(--border-color-light);
             box-shadow: none;
         }
 
         button.secondary:not(:disabled):hover {
             background-color: var(--hover-bg-color);
-            color: var(--text-color);
-            transform: none;
-            box-shadow: none;
+            border-color: var(--primary-color);
         }
 
         button.icon-button {
             background: none;
             color: var(--icon-color);
-            padding: 6px;
-            font-size: 1.1rem;
-            /* Icon size */
-            line-height: 1;
-            border-radius: 50%;
+            padding: 8px;
+            border-radius: var(--border-radius-full);
             box-shadow: none;
+            width: 40px;
+            height: 40px;
         }
 
         button.icon-button:not(:disabled):hover {
             background-color: var(--hover-bg-color);
             color: var(--icon-color-hover);
-            transform: none;
-            box-shadow: none;
-        }
-
-        button.icon-button svg {
-            width: 1.1em;
-            height: 1.1em;
         }
 
         /* Playlist List */
         .playlist-list {
             list-style: none;
-            margin-top: 16px;
+            margin-top: 20px;
         }
 
         .playlist-item {
@@ -468,30 +500,189 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: transform 0.3s var(--transition-timing), opacity 0.3s var(--transition-timing), background-color 0.2s var(--transition-timing), border-color 0.2s var(--transition-timing), box-shadow 0.2s var(--transition-timing); /* Add shadow transition */
+            transition: all var(--transition-speed) var(--transition-timing);
             position: relative;
             font-size: 0.9rem;
             border: 1px solid transparent;
-            will-change: transform, background-color, box-shadow;
+            min-width: 0; /* Allow flex children to truncate */
+        }
+
+        .playlist-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 8px;
+        }
+
+        .playlist-count {
+            flex-shrink: 0;
+            color: var(--text-color-subtle);
+            font-size: 0.8rem;
+            margin-right: 8px;
+        }
+
+        .playlist-item .controls {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
         }
 
         .playlist-item:hover {
-            background-color: var(--hover-bg-color);
-            box-shadow: var(--shadow-xs); /* Slight shadow */
+            background-color: var(--surface-color-alt);
         }
 
         .playlist-item.active {
-            background-color: var(--primary-color-light);
-            color: var(--primary-color-dark);
-            font-weight: 600;
-            border-color: var(--primary-color-light);
-        }
-
-        html[data-theme="dark"] .playlist-item.active {
+            background-color: var(--hover-bg-color);
             color: var(--primary-color);
-            border-color: rgba(var(--primary-color-rgb), 0.3);
+            font-weight: 600;
         }
 
+        .sidebar-thin .playlist-item {
+            padding: 8px 8px;
+        }
+
+        .sidebar-thin .playlist-item .controls {
+            display: none; /* Hide rename/delete when thin */
+        }
+
+        .sidebar-thin .playlist-item:hover .controls {
+            display: flex; /* Show rename/delete on hover only when thin */
+            position: absolute;
+            right: 4px;
+            background: var(--surface-color-alt);
+            padding: 2px;
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-sm);
+            z-index: 5;
+        }
+
+        .sidebar-thin .playlist-count {
+            display: none; /* Hide count when thin to prioritize name */
+        }
+
+        .sidebar-thin .playlist-form-unified button span,
+        .sidebar-thin .playlist-form-unified button {
+             width: auto;
+             min-width: 0;
+        }
+
+        .sidebar-thin .playlist-form-unified button {
+            padding: 0 10px;
+        }
+
+        .sidebar-thin .playlist-form-unified button svg {
+            margin: 0;
+        }
+
+        /* Hide text in "Create" button when thin */
+        .sidebar-thin #createPlaylistBtn {
+            padding: 0;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .sidebar-thin #createPlaylistBtn .btn-text {
+            display: none;
+        }
+
+        .sidebar-thin #createPlaylistBtn svg {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+        }
+
+        .sidebar-thin .playlist-form-unified {
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .sidebar-thin .playlist-form-unified input {
+            padding: 8px 8px;
+            font-size: 0.8rem;
+        }
+
+        .sidebar-thin .playlist-form-unified input::placeholder {
+            color: transparent; /* Hide placeholder when thin to avoid clutter */
+        }
+
+        .sidebar-thin .playlist-filter-unified {
+            padding: 4px 8px;
+            gap: 4px;
+        }
+
+        .sidebar-thin .playlist-filter-unified input::placeholder {
+            color: transparent;
+        }
+
+        .sidebar-thin .sidebar-header h2 {
+            font-size: 0;
+            gap: 0;
+            margin: 0 0 16px 0;
+            text-align: center;
+        }
+
+        .sidebar-thin .sidebar-header h2 svg {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto;
+            display: inline-block;
+        }
+
+        .sidebar-thin .sidebar-header .form-section label {
+            font-size: 0.75rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-thin .sidebar-content {
+            padding: 8px;
+            margin: 8px 0 8px 8px;
+        }
+
+        .sidebar-thin .sidebar-header .form-section {
+            margin-bottom: 12px;
+        }
+
+        /* Smart Controls for Footer */
+        .sidebar-thin .sidebar-footer {
+            display: block; /* Show footer but as icons only */
+            padding: 12px 8px;
+        }
+
+        .sidebar-thin .sidebar-footer .btn-text {
+            display: none; /* Hide button text when thin */
+        }
+
+        .sidebar-thin .sidebar-footer button {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 50%;
+            justify-content: center;
+        }
+
+        .sidebar-thin .sidebar-footer button svg {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+        }
+
+        .sidebar-thin .sidebar-footer .settings-row {
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .sidebar-thin .sidebar-footer .settings-group {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Drag & Drop Styles for Playlists */
         .playlist-item.dragging {
             opacity: 0.4;
             cursor: grabbing;
@@ -501,38 +692,15 @@
             will-change: transform, opacity;
         }
 
-        /* Playlist drag-over style (similar to video card drag-over) */
         .playlist-item.drag-over {
             outline: 2px dashed var(--primary-color);
             outline-offset: -2px;
-            background-color: var(--primary-color-light); /* Use a more active background */
-            transform: scale(1.01); /* Subtle "target" scale */
-            transition: all var(--transition-fast) ease-in-out; /* Quick transition for drag feedback */
-        }
-
-        .playlist-name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-right: 8px;
-            flex-grow: 1;
-            /* pointer-events: none; */ /* Removed to allow clicking name to select */
-        }
-
-        .playlist-count {
-            font-size: 0.8rem;
-            color: var(--text-color-subtle);
-            margin-left: 4px;
-            font-weight: 400;
-            flex-shrink: 0;
-            pointer-events: none;
+            background-color: var(--primary-color-light);
+            transform: scale(1.01);
+            transition: all var(--transition-fast) ease-in-out;
         }
 
         .playlist-item.active .playlist-count {
-            color: var(--primary-color);
-        }
-
-        html[data-theme="dark"] .playlist-item.active .playlist-count {
             color: var(--primary-color);
         }
 
@@ -542,52 +710,45 @@
             opacity: 0;
             transition: opacity var(--transition-speed) var(--transition-timing);
             flex-shrink: 0;
-            margin-left: 8px;
-            align-items: center; /* Align controls vertically */
+            margin-left: auto;
+            align-items: center;
         }
 
         .playlist-item:hover .controls,
         .playlist-item.active .controls,
         .playlist-item .controls:focus-within {
-            /* Show on focus too */
             opacity: 1;
         }
 
         .playlist-item .controls button,
-        .playlist-item .controls .playlist-drag-handle { /* Include drag handle */
-            /* Make control buttons smaller */
+        .playlist-item .controls .playlist-drag-handle {
             padding: 4px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             line-height: 1;
             min-width: auto;
             background-color: transparent;
             color: var(--text-color-muted);
             box-shadow: none;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-full);
         }
 
         .playlist-item .controls button:hover,
-        .playlist-item .controls .playlist-drag-handle:hover { /* Include drag handle */
-            background-color: var(--surface-color-alt);
+        .playlist-item .controls .playlist-drag-handle:hover {
+            background-color: var(--hover-bg-color);
             color: var(--text-color);
         }
 
-        html[data-theme="dark"] .playlist-item .controls button:hover,
-        html[data-theme="dark"] .playlist-item .controls .playlist-drag-handle:hover {
-            background-color: var(--background-color);
-        }
-
-        .playlist-item .controls button svg,
-        .playlist-item .controls .playlist-drag-handle svg { /* Include drag handle */
-            width: 0.9em;
-            height: 0.9em;
-        }
-
         .playlist-drag-handle {
-            cursor: grab; /* Use grab cursor for the handle */
+            cursor: grab;
         }
+
         .playlist-drag-handle:active {
-            cursor: grabbing; /* Use grabbing cursor while dragging */
-            color: var(--text-color); /* Change color while active */
+            cursor: grabbing;
         }
 
 
@@ -596,11 +757,12 @@
             flex: 1;
             padding: 10px 25px;
             overflow-y: auto;
-            transition: background-color var(--transition-speed) var(--transition-timing);
-            border: 1px solid var(--border-color-light);
             border-radius: var(--border-radius-lg);
             margin: 10px 10px 10px 10px;
-            will-change: background-color;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color-light);
+            box-shadow: var(--shadow-xs);
+            transition: all var(--transition-speed) var(--transition-timing);
         }
 
         .main-header {
@@ -614,17 +776,15 @@
             border-bottom: 1px solid var(--border-color-light);
             transition: all var(--transition-speed) var(--transition-timing);
             opacity: 0;
-            animation: fadeIn var(--transition-speed) var(--transition-timing) 0.1s forwards; /* Use new timing */
+            animation: fadeIn var(--transition-speed) var(--transition-timing) 0.1s forwards;
         }
 
         #currentPlaylistTitle {
-            font-weight: 700;
+            font-weight: 600;
             font-size: 1.5rem;
-            /* Slightly smaller */
             color: var(--text-color);
             min-height: 1.5rem;
             flex-grow: 1;
-            transition: color var(--transition-speed) var(--transition-timing);
         }
 
         .playlist-actions {
@@ -705,18 +865,52 @@
         }
 
 
-        /* Add Video Form */
+        /* Video Form (Unified Material Design) */
         .video-form {
-            background-color: var(--surface-color);
-            padding: 10px 20px;
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 20px;
+            background-color: var(--surface-color-alt);
+            padding: 6px 6px 6px 24px; /* Increased left padding for breathing room */
+            border-radius: var(--border-radius-full);
+            margin-bottom: 24px;
             border: 1px solid var(--border-color-light);
-            transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 10px; /* Updated gap from 8 to 10 */
+            box-shadow: var(--shadow-xs);
+            transition: all var(--transition-speed) var(--transition-timing);
+        }
+
+        .video-form:focus-within {
+            border-color: var(--primary-color);
+            background-color: var(--surface-color);
+            box-shadow: 0 0 0 2px var(--focus-ring-color);
+        }
+
+        .video-form input[type="url"] {
+            flex-grow: 1;
+            background: transparent !important;
+            border: none !important;
+            padding: 8px 4px; /* Added internal room for text */
+            font-size: 0.95rem;
+            color: var(--text-color);
+            outline: none;
+            box-shadow: none !important;
+        }
+
+        /* Fix for color inconsistency when pasting/autofilling */
+        .video-form input[type="url"]:-webkit-autofill,
+        .video-form input[type="url"]:-webkit-autofill:hover,
+        .video-form input[type="url"]:-webkit-autofill:focus {
+            -webkit-text-fill-color: var(--text-color);
+            -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .video-form button {
+            flex-shrink: 0;
+            padding: 8px 20px;
+            height: 38px;
+            font-size: 0.85rem;
+            /* Keep it a pill but inside the bigger pill */
         }
 
         .video-form label {
@@ -734,45 +928,64 @@
         }
 
 
-        /* Player Wrapper */
+        /* Player Wrapper (Material 3) */
         .player-wrapper {
             margin-top: 24px;
             margin-bottom: 24px;
             border-radius: var(--border-radius-lg);
             overflow: hidden;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-lg);
             position: relative;
             z-index: var(--z-sticky);
             border: 1px solid var(--border-color-light);
-            transition: border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing);
             background-color: #000;
-            /* Black background behind player */
+            transition: all var(--transition-speed) var(--transition-timing);
+        }
+
+        .player-wrapper.mini-player {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 340px;
+            margin: 0;
+            z-index: var(--z-toast);
+            box-shadow: var(--shadow-xl);
+            animation: slideInFromRight 0.4s var(--transition-timing);
+            border-radius: var(--border-radius-lg);
+            border: 2px solid var(--primary-color);
+        }
+
+        .player-wrapper.mini-player .player-container {
+            padding-bottom: 56.25%;
+            height: 0;
+        }
+
+        @keyframes slideInFromRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .close-player-btn {
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 12px;
+            right: 12px;
             z-index: calc(var(--z-sticky) + 1);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
             border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            padding: 0;
+            border-radius: var(--border-radius-full);
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            opacity: 0.7;
-            transition: opacity 0.2s ease, background-color 0.2s ease;
-            transform: translateY(0);
+            transition: all var(--transition-speed) var(--transition-timing);
         }
 
         .close-player-btn:hover {
-            opacity: 1;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: var(--primary-color);
+            transform: scale(1.1);
         }
 
         .close-player-btn svg {
@@ -853,6 +1066,12 @@
             transform: translateY(-50%);
         }
 
+        body.audio-only-active .player-wrapper.mini-player {
+            min-height: auto;
+            padding: 10px 40px 10px 15px;
+            width: 300px;
+        }
+
         #player {
             position: absolute;
             top: 0;
@@ -873,92 +1092,40 @@
             will-change: transform, opacity;
         }
 
+        /* Video Card (Material 3 - Reverted Size) */
         .video-card {
-            background-color: var(--video-card-background);
-            border-radius: var(--border-radius-md);
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius-md); /* Reduced radius to prevent cutting thumbnail */
             overflow: hidden;
             box-shadow: var(--shadow-xs);
             cursor: pointer;
-            transition: transform 0.3s var(--transition-timing-spring), opacity 0.3s var(--transition-timing), box-shadow 0.3s var(--transition-timing); /* Use spring for transform, smooth for others */
+            transition: all 0.2s var(--transition-timing);
             display: flex;
             flex-direction: column;
             position: relative;
-            border: 1px solid transparent;
-            /* Placeholder for hover/drag */
+            border: 1px solid #000000;
             will-change: transform, opacity, box-shadow;
         }
 
         .video-card:hover {
-            transform: translateY(-5px) scale(1.02) translateZ(0);
-            opacity: 0.98; /* Slightly less opaque */
-            box-shadow: var(--shadow-md); /* More pronounced shadow on hover */
-            will-change: transform, opacity, box-shadow;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+            background-color: var(--surface-color-alt);
         }
 
-        /* Drag & Drop Styles */
-        .video-card.dragging {
-            opacity: 0.4;
-            box-shadow: var(--shadow-lg);
-            transform: scale(0.98);
-            cursor: grabbing;
-            /* border-color: var(--primary-color); */ /* Removed border */
-            background: var(--surface-color-alt);
-            will-change: transform, opacity;
-        }
-
-        /* Style for the active/playing video card */
         .video-card.playing {
+            background-color: var(--hover-bg-color);
             border-color: var(--primary-color);
-            box-shadow: var(--shadow-md);
-            background-color: var(--primary-color-light);
-            /* Keep the transparent border placeholder for consistency */
-            border-width: 1px;
-            border-style: solid;
+            box-shadow: var(--shadow-xs);
         }
-
-        html[data-theme="dark"] .video-card.playing {
-            background-color: rgba(var(--primary-color-rgb), 0.15);
-            border-color: var(--primary-color-dark);
-        }
-
-        /* Remove ::before/::after and inset box-shadow styles */
-        /*
-        .video-card::before,
-        .video-card::after { ... }
-        .video-card::before { ... }
-        .video-card::after { ... }
-        .video-card.drag-over-top::before,
-        .video-card.drag-over-bottom::after { ... }
-        .video-card.drag-over-top { ... }
-        .video-card.drag-over-bottom { ... }
-        */
-
-        /* Restore the original drag-over outline style */
-        .video-card.drag-over {
-            box-shadow: var(--shadow-md); /* Keep hover shadow */
-            /* Use border or outline for drop indicator */
-            outline: 2px dashed var(--primary-color);
-            outline-offset: -2px; /* Inside the card */
-            transform: scale(1.01); /* Subtle "target" scale */
-            background-color: var(--primary-color-light); /* Use a more active background */
-            transition: all var(--transition-fast) ease-in-out; /* Quick transition for drag feedback */
-        }
-        html[data-theme="dark"] .video-card.drag-over {
-            background-color: rgba(var(--primary-color-rgb), 0.2);
-        }
-
-
-        /* Optional: Add space indicator between cards (Removed as we use ::before/::after now) */
-        /* .drop-indicator { ... } */
-
 
         .thumbnail-wrapper {
             position: relative;
-            padding-bottom: 56.25%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             height: 0;
             overflow: hidden;
-            background-color: var(--surface-color-alt);
-            transition: background-color var(--transition-speed) var(--transition-timing);
+            background-color: #000; /* Black background for thumbnail placeholder */
+            border-bottom: 1px solid var(--border-color-light);
         }
 
         .thumbnail {
@@ -967,74 +1134,106 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* This was good, but let's ensure it doesn't look stretched */
             display: block;
-            transition: transform 0.3s ease-out;
-        }
-
-        .video-card:hover .thumbnail {
-            transform: scale(1.03);
         }
 
         .video-info {
-            padding: 10px 12px;
             flex-grow: 1;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 8px;
+            align-items: center;
+            padding: 8px 12px;
+            gap: 6px;
         }
 
         .video-info h4 {
             font-size: 0.85rem;
             font-weight: 600;
-            margin: 0;
             line-height: 1.4;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-            overflow: hidden;
             text-overflow: ellipsis;
             flex-grow: 1;
+            margin: 0px;
+            overflow: hidden;
             transition: color var(--transition-speed) var(--transition-timing);
         }
 
         .video-controls {
             display: flex;
-            gap: 0;
+            gap: 4px;
             opacity: 0;
-            flex-shrink: 0;
             transition: opacity var(--transition-speed) var(--transition-timing);
-            align-items: center;
         }
 
-        .video-card:hover .video-controls,
-        .video-card .video-controls:focus-within {
+        .video-card:hover .video-controls {
             opacity: 1;
         }
 
         .video-controls button,
         .video-controls .drag-handle {
-            padding: 4px;
-            font-size: 1rem;
-            line-height: 1;
-            background: none;
+            width: 32px;
+            height: 32px;
+            padding: 6px;
+            border-radius: var(--border-radius-full);
             color: var(--text-color-muted);
-            box-shadow: none;
-            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-speed) var(--transition-timing);
         }
 
         .video-controls button:hover,
         .video-controls .drag-handle:hover {
-            color: var(--text-color);
             background-color: var(--hover-bg-color);
-            transform: none;
+            color: var(--primary-color);
         }
 
-        .drag-handle {
-            cursor: grab;
-            font-size: 1.1rem;
-            padding: 4px;
+        /* Toast Notifications (Material 3) */
+        .toast-container {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: var(--z-toast);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background-color: var(--toast-bg);
+            color: var(--toast-text);
+            padding: 14px 24px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-lg);
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s var(--transition-timing);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success { border-left: 4px solid #4caf50; }
+        .toast.error { border-left: 4px solid #f44336; }
+        .toast.info { border-left: 4px solid #2196f3; }
+
+        .toast svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
 
         .drag-handle:active {
@@ -1120,54 +1319,7 @@
 
         /* Ensure size */
 
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-end;
-        }
 
-        .toast {
-            background-color: var(--toast-bg);
-            color: var(--toast-text);
-            padding: 12px 18px;
-            border-radius: var(--border-radius-md);
-            box-shadow: var(--shadow-lg);
-            font-size: 0.9rem;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .toast.error {
-            background-color: var(--primary-color-dark);
-            color: white;
-        }
-
-        .toast.success {
-            background-color: #28a745;
-            color: white;
-        }
-
-        /* Example success color */
-        .toast svg {
-            width: 1.1em;
-            height: 1.1em;
-            flex-shrink: 0;
-        }
 
         /* Utility */
         .hidden {
@@ -1312,17 +1464,23 @@
             }
 
             .video-form {
-                flex-direction: column;
-                /* Stack form elements */
-                align-items: stretch;
-                /* Stretch elements to full width */
-                padding: 12px 16px;
-                gap: 10px;
+                flex-direction: row; /* Maintain row layout on mobile */
+                align-items: center;
+                padding: 6px 6px 6px 20px; /* Consistent with desktop but slightly tighter */
+                gap: 8px;
+                border-radius: var(--border-radius-full);
             }
 
             .video-form input[type="url"] {
                 margin-bottom: 0;
-                /* Remove bottom margin */
+                padding: 8px 0;
+                font-size: 16px; /* Still prevent auto-zoom */
+            }
+
+            .video-form button {
+                padding: 8px 16px;
+                height: 36px;
+                font-size: 0.8rem;
             }
 
             /* Add this rule to prevent mobile zoom on input focus */
@@ -1375,8 +1533,8 @@
             }
 
             .video-info {
-                padding: 8px 10px;
-                /* Adjust padding */
+                padding: 6px 10px;
+                align-items: center;
             }
 
             .video-info h4 {

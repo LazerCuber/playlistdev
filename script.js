@@ -41,6 +41,7 @@ let isPlayerReady = false;
 let videoIdToPlayOnReady = null;
 let isAutoplayEnabled = true;
 let currentlyPlayingVideoId = null;
+let playingPlaylistId = null; // Track which playlist the current video belongs to
 let draggedVideoId = null;
 let dragTargetElement = null;
 let draggedPlaylistId = null;
@@ -52,6 +53,7 @@ let touchDraggedElement = null;
 const videosPerPage = 20;
 let currentPage = 1;
 let isAudioOnlyMode = false;
+let consecutiveErrorCount = 0; // Track consecutive player errors to prevent loops
 
 // Icons
 const ICONS = {
@@ -98,12 +100,23 @@ function init() {
 function loadSidebarWidth() {
     const savedWidth = localStorage.getItem('sidebarWidth');
     if (savedWidth) {
-        sidebarEl.style.width = savedWidth + 'px';
+        const width = parseInt(savedWidth);
+        sidebarEl.style.width = width + 'px';
+        updateSidebarClass(width);
+    }
+}
+
+function updateSidebarClass(width) {
+    if (width < 160) {
+        sidebarEl.classList.add('sidebar-thin');
+    } else {
+        sidebarEl.classList.remove('sidebar-thin');
     }
 }
 
 function saveSidebarWidth(width) {
     localStorage.setItem('sidebarWidth', width);
+    updateSidebarClass(width);
 }
 
 function initSidebarResize(e) {
@@ -124,6 +137,7 @@ function handleSidebarResize(e) {
 
     const newWidth = Math.max(minWidth, Math.min(e.clientX - containerRect.left, maxWidth));
     sidebarEl.style.width = newWidth + 'px';
+    updateSidebarClass(newWidth);
 }
 
 function stopSidebarResize() {
@@ -445,7 +459,13 @@ function onYouTubeIframeAPIReady() {
         ytPlayer = new YT.Player('player', {
             height: '100%',
             width: '100%',
-            playerVars: { 'playsinline': 1, 'rel': 0, 'enablejsapi': 1, 'autoplay': 1 },
+            playerVars: { 
+                'playsinline': 1, 
+                'enablejsapi': 1, 
+                'autoplay': 1,
+                'widget_referrer': window.location.href, // Help YouTube understand the context
+                'origin': window.location.origin || '*' // Add origin to prevent 153 errors
+            },
             events: {
                 'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange,
@@ -468,6 +488,7 @@ function onPlayerReady() {
 function onPlayerStateChange(event) {
     const currentPlaylist = playlists.find(p => p.id === currentPlaylistId);
     if (event.data === YT.PlayerState.PLAYING) {
+        consecutiveErrorCount = 0; // Reset error count on successful playback
         currentlyPlayingVideoId = getCurrentPlayingVideoIdFromApi();
         updatePlayingVideoHighlight(currentlyPlayingVideoId);
         updateAudioOnlyDisplay();
@@ -504,11 +525,21 @@ function onPlayerError(event) {
         case 2: errorMsg = 'Invalid video ID or player parameter.'; shouldSkip = true; break;
         case 5: errorMsg = 'Error in the HTML5 player.'; shouldSkip = true; break;
         case 100: errorMsg = 'Video not found (removed or private).'; shouldSkip = true; break;
-        case 101: case 150: errorMsg = 'Playback disallowed by video owner.'; shouldSkip = true; break;
+        case 101: case 150: case 153: errorMsg = 'Playback disallowed by video owner or restricted (Error 153).'; shouldSkip = true; break;
         default: errorMsg = `Player error code: ${event.data}`; shouldSkip = true; break;
     }
 
+    consecutiveErrorCount++;
     showToast(`Player Error: ${errorMsg}`, 'error');
+
+    if (consecutiveErrorCount >= 3) {
+        showToast('Too many consecutive playback errors. Stopping to prevent loop.', 'error', 6000);
+        stopVideo();
+        playerWrapperEl.classList.add('hidden');
+        consecutiveErrorCount = 0; // Reset after stopping
+        return;
+    }
+
     if (isAutoplayEnabled && shouldSkip) {
         showToast(`${errorMsg} Skipping to next video.`, 'info', 4000);
         setTimeout(playNextVideo, 500);
@@ -546,6 +577,7 @@ function playNextVideo() {
     const nextVideo = currentPlaylist.videos[nextIndex];
 
     if (nextVideo) {
+        playingPlaylistId = currentPlaylistId; // Update playing playlist
         playVideo(nextVideo.id);
     } else {
         console.error(`Could not find next video at index ${nextIndex}`);
@@ -706,10 +738,8 @@ function selectPlaylist(id) {
     addVideoBtn.disabled = videoUrlInput.value.trim() === '';
     videoPlaceholderEl.classList.add('hidden');
 
-    // Reset player and video highlights
-    playerWrapperEl.classList.add('hidden');
-    stopVideo();
-    updatePlayingVideoHighlight(null);
+    // Update player mode (mini vs regular)
+    updatePlayerMode();
 
     // Re-render playlists and videos
     renderPlaylists();
@@ -905,7 +935,9 @@ function playVideo(videoId) {
 
     playerWrapperEl.classList.remove('hidden');
     currentlyPlayingVideoId = videoId;
+    playingPlaylistId = currentPlaylistId; // Store which playlist is playing
     updatePlayingVideoHighlight(videoId);
+    updatePlayerMode(); // Determine if it should be mini or regular
 
     if (ytPlayer && isPlayerReady) {
         try {
@@ -1242,9 +1274,28 @@ function showToast(message, type = 'info', duration = 3000) {
     }, duration);
 }
 
+function updatePlayerMode() {
+    if (!currentlyPlayingVideoId) {
+        playerWrapperEl.classList.add('hidden');
+        playerWrapperEl.classList.remove('mini-player');
+        return;
+    }
+
+    // If the playlist we're viewing isn't the one we're playing, go to mini player mode
+    if (currentPlaylistId !== playingPlaylistId) {
+        playerWrapperEl.classList.add('mini-player');
+        playerWrapperEl.classList.remove('hidden');
+    } else {
+        playerWrapperEl.classList.remove('mini-player');
+        playerWrapperEl.classList.remove('hidden');
+    }
+}
+
 function handleClosePlayer() {
     stopVideo();
     playerWrapperEl.classList.add('hidden');
+    playerWrapperEl.classList.remove('mini-player');
+    playingPlaylistId = null;
     destroyPlayer(); // Destroy player when closed
 }
 
@@ -1320,6 +1371,7 @@ function playPreviousVideo() {
     const prevIndex = (currentIndex - 1 + currentPlaylist.videos.length) % currentPlaylist.videos.length;
 
     if (currentPlaylist.videos[prevIndex]) {
+        playingPlaylistId = currentPlaylistId; // Update playing playlist
         playVideo(currentPlaylist.videos[prevIndex].id);
     }
 }

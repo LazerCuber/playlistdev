@@ -45,20 +45,30 @@
                     </h2>
                     <div class="form-section">
                         <label for="playlistName">Create New Playlist</label>
-                        <input type="text" id="playlistName" placeholder="E.g., Coding Music">
-                        <button id="createPlaylistBtn" style="margin-top: 8px; border-radius: 15px">
-                            <!-- SVG Placeholder: Plus icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                            </svg>
-                            Create
-                        </button>
+                        <div class="playlist-form-unified">
+                            <input type="text" id="playlistName" placeholder="E.g., Coding Music">
+                            <button id="createPlaylistBtn" title="Create Playlist">
+                                <!-- SVG Placeholder: Plus icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                                <span class="btn-text">Create</span>
+                            </button>
+                        </div>
                     </div>
                     <div class="form-section">
                         <label for="playlistSearch">Filter Playlists</label>
-                        <input type="search" id="playlistSearch" placeholder="Search...">
+                        <div class="playlist-filter-unified">
+                            <!-- SVG Placeholder: Search icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                            <input type="search" id="playlistSearch" placeholder="Search...">
+                        </div>
                     </div>
                 </div>
 
@@ -84,7 +94,7 @@
                                     <path
                                         d="M12.5 5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5zm-10 8a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5z" />
                                 </svg>
-                                Shuffle Playlist
+                                <span class="btn-text">Shuffle Playlist</span>
                             </button>
                         </div>
                         <div class="settings-group">
@@ -105,7 +115,7 @@
                                     <path
                                         d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
                                 </svg>
-                                Import
+                                <span class="btn-text">Import</span>
                             </button>
                             <button id="exportBtn" class="secondary" title="Export Playlists (.json)">
                                 <!-- SVG Placeholder: Download Icon -->
@@ -116,7 +126,7 @@
                                     <path
                                         d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
                                 </svg>
-                                Export
+                                <span class="btn-text">Export</span>
                             </button>
                             <input type="file" id="importFile" accept=".json" class="hidden">
                         </div>
@@ -160,7 +170,7 @@
 
             <div class="video-form hidden" id="videoForm">
                 <label for="videoUrl" class="visually-hidden">Add YouTube Video URL</label>
-                <input type="url" id="videoUrl" placeholder="Paste YouTube URL and press Enter or click Add">
+                <input type="url" id="videoUrl" placeholder="Paste video URL here">
                 <button id="addVideoBtn" disabled>
                     <!-- SVG Placeholder: Plus icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
