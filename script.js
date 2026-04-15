@@ -101,10 +101,9 @@ function init() {
 }
 
 function checkPiPSupport() {
-    const isSupported = document.pictureInPictureEnabled || !!document.createElement('video').webkitSetPresentationMode;
-    if (!isSupported) {
-        pipPlayerBtn.classList.add('hidden');
-    }
+    // We always show the button because programmatic detection is unreliable for iframes,
+    // and the button now serves as a fallback to Fullscreen/Manual instructions.
+    pipPlayerBtn.classList.remove('hidden');
 }
 
 // Sidebar Resizing
@@ -1365,21 +1364,26 @@ async function togglePiP() {
     if (!iframe) return;
 
     try {
-        if (document.pictureInPictureElement) {
-            await document.exitPictureInPicture();
-        } else if (document.pictureInPictureEnabled) {
-            // Some browsers allow requestPictureInPicture on the iframe itself
-            await iframe.requestPictureInPicture();
-        } else if (iframe.webkitSetPresentationMode) {
-            // Safari mobile PiP support
+        // Since we use the YouTube IFrame API, the <video> element is inside a cross-origin iframe.
+        // Browsers restrict programmatic PiP on cross-origin iframes for security.
+        
+        if (iframe.webkitSetPresentationMode) {
+            // Some Safari versions allow this on the iframe itself
             const mode = iframe.webkitPresentationMode === 'picture-in-picture' ? 'inline' : 'picture-in-picture';
-            iframe.webkitSetPresentationMode(mode);
+            await iframe.webkitSetPresentationMode(mode);
         } else {
-            showToast("Picture-in-Picture is not supported in this browser.", "info");
+            // If we can't trigger PiP directly, we can try to go Fullscreen.
+            // On iOS/mobile, going Fullscreen is usually the first step to entering PiP.
+            if (iframe.requestFullscreen) {
+                await iframe.requestFullscreen();
+            } else if (iframe.webkitRequestFullscreen) {
+                await iframe.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+            showToast("To use PiP: Go full screen, then swipe up or tap the PiP icon in the player.", "info", 6000);
         }
     } catch (error) {
-        console.error("PiP error:", error);
-        showToast("Could not start Picture-in-Picture.", "error");
+        console.warn("PiP trigger restricted:", error);
+        showToast("PiP restricted. Use the player's own controls or go full screen first.", "info", 6000);
     }
 }
 
