@@ -54,7 +54,6 @@ const videosPerPage = 20;
 let currentPage = 1;
 let isAudioOnlyMode = false;
 let consecutiveErrorCount = 0; // Track consecutive player errors to prevent loops
-let silentAudio = null; // For keeping audio session alive on iOS
 
 // Icons
 const ICONS = {
@@ -195,24 +194,6 @@ function setupEventListeners() {
 
     setupTouchDragAndDropListeners();
     window.addEventListener('resize', debounce(handleWindowResize, 100));
-    
-    // Background Playback Handling
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-}
-
-// Background Playback Handler
-function handleVisibilityChange() {
-    if (document.visibilityState === 'visible') {
-        // If it was playing and paused by system, we might need to resume
-        if (currentlyPlayingVideoId && ytPlayer && ytPlayer.getPlayerState) {
-            const state = ytPlayer.getPlayerState();
-            // If it's paused but we think it should be playing (based on our state)
-            // Note: YouTube's state 2 is PAUSED
-            if (state === 2 && 'mediaSession' in navigator && navigator.mediaSession.playbackState === 'playing') {
-                ytPlayer.playVideo();
-            }
-        }
-    }
 }
 
 // Event Delegation Handlers
@@ -470,27 +451,20 @@ function destroyPlayer() {
     }
     isPlayerReady = false;
     videoIdToPlayOnReady = null;
-    stopSilentAudio(); // Stop silent audio when player is destroyed
 }
 
 function onYouTubeIframeAPIReady() {
     if (document.getElementById('player')) {
         destroyPlayer(); // Ensure no duplicate player
-        
-        const origin = window.location.origin || (window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : ''));
-        
         ytPlayer = new YT.Player('player', {
             height: '100%',
             width: '100%',
-            host: 'https://www.youtube.com',
             playerVars: { 
                 'playsinline': 1, 
                 'enablejsapi': 1, 
                 'autoplay': 1,
-                'rel': 0, // Don't show related videos from other channels
-                'cc_load_policy': 1, // Sometimes helps with loading correct user state
                 'widget_referrer': window.location.href, // Help YouTube understand the context
-                'origin': origin // Add origin to prevent 153 errors
+                'origin': window.location.origin || '*' // Add origin to prevent 153 errors
             },
             events: {
                 'onReady': onPlayerReady,
@@ -523,13 +497,9 @@ function onPlayerStateChange(event) {
             if (videoData) updateMediaSessionMetadata(videoData);
         }
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "playing";
-        
-        // Start silent audio to keep session alive on iOS background/lock
-        startSilentAudio();
     }
     if (event.data === YT.PlayerState.PAUSED) {
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "paused";
-        stopSilentAudio();
     }
     if (event.data === YT.PlayerState.ENDED) {
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "none";
@@ -958,13 +928,10 @@ function handleReorderVideo(videoIdToMove, targetVideoId) {
     renderVideos();
 }
 
-async function playVideo(videoId) {
+function playVideo(videoId) {
     if (currentlyPlayingVideoId === videoId && ytPlayer && isPlayerReady) {
         return; // Avoid redundant calls
     }
-
-    // Request storage access for Safari (needs user interaction, this is perfect)
-    await requestYouTubeStorageAccess();
 
     playerWrapperEl.classList.remove('hidden');
     currentlyPlayingVideoId = videoId;
@@ -1014,7 +981,6 @@ function stopVideo() {
         navigator.mediaSession.metadata = null;
         navigator.mediaSession.playbackState = 'none';
     }
-    stopSilentAudio();
 }
 
 function extractVideoId(url) {
@@ -1492,49 +1458,8 @@ function handleWindowResize() {
 document.addEventListener('DOMContentLoaded', init);
 
 function isIOS() {
-    return /iphone|ipad|ipod/i.test(navigator.userAgent) || 
-           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS
+    return /iphone|ipad|ipod/i.test(navigator.userAgent);
 }
-
-function isSafari() {
-    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-}
-
-function isMobileSafari() {
-    return isIOS() && isSafari();
-}
-
 function isInStandaloneMode() {
     return ('standalone' in window.navigator) && window.navigator.standalone;
-}
-
-// Storage Access API for Safari
-async function requestYouTubeStorageAccess() {
-    if (isSafari() && document.requestStorageAccess) {
-        try {
-            await document.requestStorageAccess();
-            console.log("Storage access granted for Safari.");
-        } catch (error) {
-            console.warn("Storage access denied or already granted:", error);
-        }
-    }
-}
-
-// Silence Loop for iOS Background Audio Persistence
-const SILENCE_AUDIO_BASE64 = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==';
-
-function startSilentAudio() {
-    if (!isIOS()) return;
-    if (!silentAudio) {
-        silentAudio = new Audio();
-        silentAudio.src = SILENCE_AUDIO_BASE64;
-        silentAudio.loop = true;
-    }
-    silentAudio.play().catch(e => console.warn("Failed to play silent audio:", e));
-}
-
-function stopSilentAudio() {
-    if (silentAudio) {
-        silentAudio.pause();
-    }
 }

@@ -1007,11 +1007,10 @@
 
         /* Style to hide the video when audio-only is active */
         body.audio-only-active .player-container {
-            height: 1px !important;
+            height: 0 !important;
             padding-bottom: 0 !important;
             overflow: hidden;
-            opacity: 0.01;
-            pointer-events: none;
+            opacity: 0;
         }
 
         /* Keep the wrapper visible but maybe add an indicator? */
