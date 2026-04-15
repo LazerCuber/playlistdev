@@ -22,7 +22,7 @@
             /* Sidebar */
             --sidebar-min-width: 120px;
             --sidebar-max-width: 500px;
-            --sidebar-default-width: 255px;
+            --sidebar-default-width: 275px;
             --sidebar-resize-handle-width: 5px;
 
             /* Shadows (Material Design 3 Elevation) */
@@ -966,11 +966,17 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        .close-player-btn {
+        .player-overlay-controls {
             position: absolute;
             top: 12px;
             right: 12px;
-            z-index: calc(var(--z-sticky) + 1);
+            z-index: calc(var(--z-sticky) + 2);
+            display: flex;
+            gap: 8px;
+        }
+
+        .close-player-btn,
+        .pip-player-btn {
             background-color: rgba(0, 0, 0, 0.6);
             color: #fff;
             border: none;
@@ -982,16 +988,18 @@
             justify-content: center;
             cursor: pointer;
             transition: all var(--transition-speed) var(--transition-timing);
+            box-shadow: var(--shadow-sm);
         }
 
-        .close-player-btn:hover {
+        .close-player-btn:hover,
+        .pip-player-btn:hover {
             background-color: var(--primary-color);
             transform: scale(1.1);
         }
 
-        .close-player-btn svg {
+        .close-player-btn svg,
+        .pip-player-btn svg {
             width: 16px;
-            /* Adjust size as needed */
             height: 16px;
         }
 
@@ -1476,10 +1484,12 @@
             .main-content {
                 padding: 16px;
                 /* Reduce padding */
-                overflow-y: visible;
-                /* Allow content to scroll with the body */
+                overflow: visible !important; /* Force visible to prevent sticky jitter */
                 order: 1;
                 /* Display before sidebar */
+                margin: 0; /* Remove margin on mobile to prevent sub-pixel jitter */
+                border: none;
+                border-radius: 0;
             }
 
             .main-header {
@@ -1557,6 +1567,34 @@
                 margin: 16px 0 !important;
                 box-shadow: var(--shadow-lg) !important;
                 animation: none !important;
+            }
+
+            /* --- Mobile Pinned Player Mode --- */
+            .main-content.player-pinned {
+                /* No need for extra padding-top with sticky */
+                padding-top: 16px; 
+            }
+
+            .player-wrapper.pinned {
+                position: sticky !important;
+                top: 8px; /* Reverted to 8px for better aesthetic with rounded edges */
+                width: 100% !important;
+                margin: 0 0 24px 0 !important;
+                z-index: 1000 !important;
+                /* Keep original design language: rounded edges and border */
+                border-radius: var(--border-radius-lg) !important;
+                border: 1px solid var(--border-color-light) !important;
+                box-shadow: var(--shadow-lg) !important;
+                /* Disable all transitions when pinned to prevent "shaking" or jitter during scroll */
+                transition: none !important;
+                /* Force GPU acceleration to help with smooth scrolling */
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+            }
+
+            .player-wrapper.pinned .close-player-btn {
+                top: 8px;
+                right: 8px;
             }
 
             .video-grid {

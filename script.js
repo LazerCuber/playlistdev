@@ -23,6 +23,7 @@ const toastContainerEl = document.getElementById('toastContainer');
 const htmlEl = document.documentElement;
 const bodyEl = document.body;
 const closePlayerBtn = document.getElementById('closePlayerBtn');
+const pipPlayerBtn = document.getElementById('pipPlayerBtn');
 const sidebarEl = document.querySelector('.sidebar');
 const sidebarResizerEl = document.getElementById('sidebarResizer');
 const shufflePlaylistBtn = document.getElementById('shufflePlaylistBtn');
@@ -32,6 +33,8 @@ const nextPageBtn = document.getElementById('nextPageBtn');
 const pageInfoEl = document.getElementById('pageInfo');
 const audioOnlyToggle = document.getElementById('audioOnlyToggle');
 const audioOnlySwitchDiv = document.getElementById('audioOnlyControlGroup').querySelector('.switch');
+
+const mainContentEl = document.querySelector('.main-content');
 
 // State
 let playlists = [];
@@ -90,9 +93,17 @@ function init() {
 
     setupEventListeners();
     updateThemeIcon();
+    checkPiPSupport();
 
     if (isIOS() && isInStandaloneMode()) {
         document.documentElement.classList.add('ios-pwa');
+    }
+}
+
+function checkPiPSupport() {
+    const isSupported = document.pictureInPictureEnabled || !!document.createElement('video').webkitSetPresentationMode;
+    if (!isSupported) {
+        pipPlayerBtn.classList.add('hidden');
     }
 }
 
@@ -169,6 +180,7 @@ function setupEventListeners() {
     audioOnlySwitchDiv.addEventListener('click', handleVisualAudioOnlySwitchClick);
     sidebarResizerEl.addEventListener('mousedown', initSidebarResize);
     closePlayerBtn.addEventListener('click', handleClosePlayer);
+    pipPlayerBtn.addEventListener('click', togglePiP);
 
     playlistListEl.addEventListener('click', handlePlaylistClick, { passive: false });
     videoGridEl.addEventListener('click', handleVideoGridClick);
@@ -456,15 +468,29 @@ function destroyPlayer() {
 function onYouTubeIframeAPIReady() {
     if (document.getElementById('player')) {
         destroyPlayer(); // Ensure no duplicate player
+        
+        // Detect local development (server or direct file access)
+        const isLocal = window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1' || 
+                       window.location.protocol === 'file:';
+
+        // Fix for 153 Error: Some videos require a valid origin.
+        // For file://, origin is "null". Many sources suggest using 'https://www.youtube.com' as origin.
+        let originValue = (window.location.origin && window.location.origin !== 'null') 
+            ? window.location.origin 
+            : 'https://www.youtube.com';
+
         ytPlayer = new YT.Player('player', {
+            // Using standard host to avoid potential 153 issues with nocookie
             height: '100%',
             width: '100%',
             playerVars: { 
                 'playsinline': 1, 
                 'enablejsapi': 1, 
                 'autoplay': 1,
-                'widget_referrer': window.location.href, // Help YouTube understand the context
-                'origin': window.location.origin || '*' // Add origin to prevent 153 errors
+                // Some videos fail 153 if referrer is file://. Removing or spoofing might help.
+                'origin': originValue,
+                'rel': 0 
             },
             events: {
                 'onReady': onPlayerReady,
@@ -472,6 +498,13 @@ function onYouTubeIframeAPIReady() {
                 'onError': onPlayerError
             }
         });
+
+        // Set referrerpolicy for the generated iframe to fix "strict-origin-when-cross-origin" issues
+        // which cause Error 153 on some restricted videos.
+        const iframe = document.getElementById('player');
+        if (iframe && iframe.tagName === 'IFRAME') {
+            iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        }
     } else {
         console.warn("Player element ('#player') not found when YouTube API was ready.");
     }
@@ -487,6 +520,7 @@ function onPlayerReady() {
 
 function onPlayerStateChange(event) {
     const currentPlaylist = playlists.find(p => p.id === currentPlaylistId);
+    
     if (event.data === YT.PlayerState.PLAYING) {
         consecutiveErrorCount = 0; // Reset error count on successful playback
         currentlyPlayingVideoId = getCurrentPlayingVideoIdFromApi();
@@ -498,9 +532,18 @@ function onPlayerStateChange(event) {
         }
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "playing";
     }
+
     if (event.data === YT.PlayerState.PAUSED) {
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "paused";
+        
+        // Background Playback Bypass:
+        // If the player is paused while the tab is hidden, try to resume it immediately.
+        // This helps bypass some mobile browser background playback restrictions.
+        if (document.hidden && isAutoplayEnabled && ytPlayer && isPlayerReady && typeof ytPlayer.playVideo === 'function') {
+            ytPlayer.playVideo();
+        }
     }
+
     if (event.data === YT.PlayerState.ENDED) {
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "none";
         if (isAutoplayEnabled) {
@@ -525,7 +568,15 @@ function onPlayerError(event) {
         case 2: errorMsg = 'Invalid video ID or player parameter.'; shouldSkip = true; break;
         case 5: errorMsg = 'Error in the HTML5 player.'; shouldSkip = true; break;
         case 100: errorMsg = 'Video not found (removed or private).'; shouldSkip = true; break;
-        case 101: case 150: case 153: errorMsg = 'Playback disallowed by video owner or restricted (Error 153).'; shouldSkip = true; break;
+        case 101: case 150: case 153: 
+            errorMsg = 'Playback restricted or origin blocked (Error 153).'; 
+            if (window.location.protocol === 'file:') {
+                errorMsg += ' Using a local web server (like the "Live Server" extension in VS Code) is the only reliable fix.';
+            } else {
+                errorMsg += ' This video might have embedding disabled by the owner.';
+            }
+            shouldSkip = true; 
+            break;
         default: errorMsg = `Player error code: ${event.data}`; shouldSkip = true; break;
     }
 
@@ -942,11 +993,6 @@ function playVideo(videoId) {
     if (ytPlayer && isPlayerReady) {
         try {
             ytPlayer.loadVideoById(videoId);
-            setTimeout(() => {
-                if (playerWrapperEl.offsetParent !== null) {
-                    playerWrapperEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-            }, 100);
         } catch (error) {
             console.error("Error calling loadVideoById:", error);
             showToast("Failed to load video.", "error");
@@ -1277,26 +1323,64 @@ function showToast(message, type = 'info', duration = 3000) {
 function updatePlayerMode() {
     if (!currentlyPlayingVideoId) {
         playerWrapperEl.classList.add('hidden');
-        playerWrapperEl.classList.remove('mini-player');
+        playerWrapperEl.classList.remove('mini-player', 'pinned');
+        mainContentEl.classList.remove('player-pinned');
         return;
     }
 
-    // If the playlist we're viewing isn't the one we're playing, go to mini player mode
-    if (currentPlaylistId !== playingPlaylistId) {
-        playerWrapperEl.classList.add('mini-player');
-        playerWrapperEl.classList.remove('hidden');
-    } else {
+    const isMobile = window.innerWidth <= 768;
+
+    // Mobile Pinned Player Logic: Always stay on top if playing
+    if (isMobile) {
+        playerWrapperEl.classList.add('pinned');
         playerWrapperEl.classList.remove('mini-player');
         playerWrapperEl.classList.remove('hidden');
+        mainContentEl.classList.add('player-pinned');
+    } else {
+        // Desktop Mini Player Logic: Only mini if we're on a different playlist
+        playerWrapperEl.classList.remove('pinned');
+        mainContentEl.classList.remove('player-pinned');
+        
+        if (currentPlaylistId !== playingPlaylistId) {
+            playerWrapperEl.classList.add('mini-player');
+            playerWrapperEl.classList.remove('hidden');
+        } else {
+            playerWrapperEl.classList.remove('mini-player');
+            playerWrapperEl.classList.remove('hidden');
+        }
     }
 }
 
 function handleClosePlayer() {
     stopVideo();
     playerWrapperEl.classList.add('hidden');
-    playerWrapperEl.classList.remove('mini-player');
+    playerWrapperEl.classList.remove('mini-player', 'pinned');
+    mainContentEl.classList.remove('player-pinned');
     playingPlaylistId = null;
     destroyPlayer(); // Destroy player when closed
+}
+
+async function togglePiP() {
+    const iframe = document.getElementById('player');
+    if (!iframe) return;
+
+    try {
+        if (document.pictureInPictureElement) {
+            await document.exitPictureInPicture();
+        } else if (document.pictureInPictureEnabled) {
+            // Some browsers allow requestPictureInPicture on the iframe itself
+            await iframe.requestPictureInPicture();
+        } else if (iframe.webkitSetPresentationMode) {
+            // Safari mobile PiP support
+            const mode = iframe.webkitPresentationMode === 'picture-in-picture' ? 'inline' : 'picture-in-picture';
+            iframe.webkitSetPresentationMode(mode);
+        } else {
+            showToast("Picture-in-Picture is not supported in this browser.", "info");
+        }
+    } catch (error) {
+        console.error("PiP error:", error);
+        showToast("Could not start Picture-in-Picture.", "error");
+    }
 }
 
 function renderPaginationControls(totalVideos, totalPages) {
@@ -1456,6 +1540,21 @@ function handleWindowResize() {
 
 // Start App
 document.addEventListener('DOMContentLoaded', init);
+
+// Background Playback "Heartbeat" - helps keep audio alive when tab is hidden
+// Note: On iOS Safari, this will only work in the background if the user uses 
+// Picture-in-Picture (PiP) or has background audio specifically enabled by a 
+// local server. True background play is a deliberate restriction by YouTube for 
+// their embedded player.
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && ytPlayer && isPlayerReady && isAutoplayEnabled && typeof ytPlayer.getPlayerState === 'function') {
+        const state = ytPlayer.getPlayerState();
+        // If it was supposed to be playing but got stuck or paused by the browser, resume it.
+        if (state === YT.PlayerState.PAUSED || state === YT.PlayerState.BUFFERING) {
+            ytPlayer.playVideo();
+        }
+    }
+});
 
 function isIOS() {
     return /iphone|ipad|ipod/i.test(navigator.userAgent);
