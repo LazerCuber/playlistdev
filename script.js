@@ -487,6 +487,7 @@ function onYouTubeIframeAPIReady() {
                 'playsinline': 1, 
                 'enablejsapi': 1, 
                 'autoplay': 1,
+                'mute': 1, // Satisfies Safari's autoplay policy for background/hidden tabs
                 // Some videos fail 153 if referrer is file://. Removing or spoofing might help.
                 'origin': originValue,
                 'rel': 0 
@@ -511,6 +512,13 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady() {
     isPlayerReady = true;
+    
+    // Automatically unmute if muted (to satisfy Safari autoplay policy initially)
+    if (ytPlayer && typeof ytPlayer.unMute === 'function') {
+        ytPlayer.unMute();
+        ytPlayer.setVolume(100);
+    }
+
     if (videoIdToPlayOnReady) {
         playVideo(videoIdToPlayOnReady);
         videoIdToPlayOnReady = null;
@@ -572,7 +580,7 @@ function onPlayerError(event) {
             if (window.location.protocol === 'file:') {
                 errorMsg += ' Using a local web server (like the "Live Server" extension in VS Code) is the only reliable fix.';
             } else {
-                errorMsg += ' This video might have embedding disabled by the owner.';
+                errorMsg += ' This video might have embedding disabled by the owner, or your device is in Low Power Mode.';
             }
             shouldSkip = true; 
             break;
