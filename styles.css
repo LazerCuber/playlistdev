@@ -1150,6 +1150,60 @@
             background-color: var(--surface-color-alt);
         }
 
+        .video-card.dragging {
+            opacity: 0.45;
+            transform: scale(0.98);
+            box-shadow: var(--shadow-sm);
+            border-color: var(--primary-color);
+            cursor: grabbing;
+        }
+
+        .video-card.drag-over {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-color), var(--shadow-md);
+            background-color: var(--primary-color-light);
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .video-card.drag-over::before {
+            content: "Drop here";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            padding: 4px 10px;
+            border-radius: var(--border-radius-full);
+            background-color: var(--primary-color);
+            color: var(--surface-color);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            box-shadow: var(--shadow-sm);
+            pointer-events: none;
+        }
+
+        .video-card.drag-over::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 2px dashed var(--primary-color);
+            pointer-events: none;
+            animation: dragIndicatorPulse 1.1s ease-in-out infinite;
+        }
+
+        @keyframes dragIndicatorPulse {
+            0%,
+            100% {
+                opacity: 0.45;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
         .video-card.playing {
             background-color: var(--hover-bg-color);
             border-color: var(--primary-color);
@@ -1637,7 +1691,15 @@
                 transform: none;
                 box-shadow: var(--shadow-xs);
                 /* Revert to base shadow */
+                background-color: var(--surface-color);
                 border-color: transparent;
+                transition: none;
+            }
+
+            .video-card:active {
+                transform: none;
+                background-color: var(--surface-color);
+                transition: none;
             }
 
             .video-card .video-controls,
@@ -1705,13 +1767,6 @@
             .playlist-item:active {
                 background-color: var(--primary-color-light); /* More direct feedback */
                 transform: translateY(0); /* Press back down */
-                transition: background-color 0.05s ease-out, transform 0.05s ease-out;
-            }
-
-            .video-card:active {
-                transform: scale(0.98);
-                /* Slight shrink effect */
-                background-color: var(--hover-bg-color);
                 transition: background-color 0.05s ease-out, transform 0.05s ease-out;
             }
 
